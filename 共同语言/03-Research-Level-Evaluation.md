@@ -1,6 +1,6 @@
 ---
 title: 共同语言 03 · Research-level Evaluation
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [shared-language, evaluation, benchmark, research]
 ---
 
@@ -275,7 +275,7 @@ ML 团队做 ablation，需要的 eval 是：
 
 ### 7.4 Judge 模型打分
 
-用 LLM 给 LLM 打分。**判官偏家**（同家模型对自家输出评分偏高）。**AlpacaEval / MT-Bench** 用这方法，要读的时候打折。
+用 LLM 给 LLM 打分。**判官偏见**（同家模型对自家输出评分偏高）。**AlpacaEval / MT-Bench** 用这方法，要读的时候打折。
 
 ### 7.5 Cherry-picking
 
@@ -368,7 +368,7 @@ Paper 里报告"我们赢的 10 个 benchmark"，没提"我们输的 5 个"。
 - Jimenez et al · 《SWE-bench》— https://arxiv.org/abs/2310.06770
 - Chiang et al · 《Chatbot Arena》— https://arxiv.org/abs/2403.04132
 - Huang et al · 《LiveCodeBench》— https://arxiv.org/abs/2403.07974
-- LMSYS · LM Arena leaderboard — https://lmarena.ai/leaderboard
+- LMSYS · LM Arena leaderboard — https://arena.ai/leaderboard
 - Hugging Face · Open LLM Leaderboard — https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard
 
 ---

@@ -1,6 +1,6 @@
 ---
 title: AI 时代的 SRE 架构师之路
-updated: 2026-05-10
+updated: 2026-05-24
 tags: [handbook, index]
 ---
 
@@ -8,7 +8,7 @@ tags: [handbook, index]
 
 > 写给 **不被 AI 替代、且能与算法工程师并肩** 的工程师
 >
-> **版本**：v1.3.0 · 2026-05-10  ·  [📝 CHANGELOG](维护/CHANGELOG.md)  ·  [🔧 维护系统](维护/README.md)
+> **版本**：v1.3.1 · 2026-05-24  ·  [📝 CHANGELOG](维护/CHANGELOG.md)  ·  [🔧 维护系统](维护/README.md)
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 附录 C · 术语表
-updated: 2026-05-10
+updated: 2026-05-24
 tags: [appendix]
 ---
 
@@ -13,6 +13,7 @@ tags: [appendix]
 | 术语 | 含义 |
 |---|---|
 | Token | 模型的最小处理单位，中文 1-2 字/token，英文约 0.75 词/token |
+| Tokenizer 代际差异 | 同一厂商不同代模型可能换 tokenizer，相同字符的 token 数会变。例：Claude Opus 4.7 用了新 tokenizer，1M context 对应 ~555k 词，而同 1M context 的 Sonnet 4.6 对应 ~750k 词——意味着 Opus 4.7 的 token 体积比 Sonnet 4.6 大约 1.35×，按 token 计账时要单独估 |
 | Context Window | 一次对话能容纳的最大 token 数 |
 | System Prompt | 贯穿整个对话的指令 / 规则 |
 | Temperature / top-p | 控制输出随机性的采样参数 |
@@ -20,7 +21,7 @@ tags: [appendix]
 | Streaming | Token 逐个返回的输出模式 |
 | Claude Opus / Sonnet / Haiku | Anthropic Claude 系列的常见分层：Opus 偏最强，Sonnet 偏平衡主力，Haiku 偏轻量快速 |
 | GPT flagship / mini / nano / reasoning | OpenAI GPT 系列的常见分层：旗舰做复杂任务，mini/nano 做低成本高频任务，reasoning 档用于复杂推理 |
-| Gemini Pro / Flash / Flash-Lite | Google Gemini 系列的常见分层：Pro 偏复杂和长上下文，Flash 偏速度成本平衡，Flash-Lite 偏轻量高吞吐 |
+| Gemini Pro / Flash / Flash-Lite | Google Gemini 系列的常见分层：Pro 偏复杂和长上下文，Flash 偏速度成本平衡，Flash-Lite 偏轻量高吞吐。当前稳定档为 Gemini 3.5 Flash，旗舰为 Gemini 3.1 Pro Preview（Gemini 3 Pro Preview 已于 2026-03-09 关停）|
 | Reasoning / Thinking Budget | 推理时让模型"多想一会"的预算控制，通常会增加延迟和 token 成本 |
 
 ## 检索与记忆

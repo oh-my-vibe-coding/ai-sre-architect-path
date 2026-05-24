@@ -11,6 +11,8 @@ tags: [part-3, practice, unit1, week]
 ## 本周目标
 掌握 **Lethal Trifecta** 威胁模型，并用它分析你**自己当前系统**里的一个真实场景。
 
+> **前置概念**：致命三角的权威定义见 [第 6 章 · AI 自治与上下文架构约束 · 致命三角](../../知识/06-AI自治与上下文架构约束.md#致命三角lethal-trifecta)。本周练习直接使用其结论，不再重复定义。红队视角下的"找完整攻击链"方法见 [深入 07](../../深入/07-Agent-Prompt-Injection红队实战.md)。
+
 ## 阅读 · B3 · 45 分钟（无 AI）
 **Simon Willison · 《The lethal trifecta for AI agents: private data + untrusted content + external communication》**
 （simonwillison.net 搜 "lethal trifecta"）

@@ -1,6 +1,6 @@
 ---
 title: CHANGELOG · 书的版本历史
-updated: 2026-05-10
+updated: 2026-05-24
 tags: [meta, changelog]
 ---
 
@@ -20,6 +20,36 @@ tags: [meta, changelog]
 > 这一段累积下一次 patch / minor 的草稿改动。
 
 *（无）*
+
+---
+
+## v1.3.1 — 2026-05-24
+
+**月度快照更新**：v1.3.0 后 2 周内厂商 / 榜单变化的系统性消化，框架与目录不变，全部为快变内容校对。
+
+### 修订（按章节）
+- **[深入 12 · §1 Gemini 段](../深入/12-Claude-GPT-Gemini三大模型系列使用指南.md#gemini-系列pro--flash--flash-lite--live)** —— Gemini 3 Pro Preview 已于 2026-03-09 关停，整段重写：升级到 3.1 Pro Preview / 3.5 Flash（稳定）/ 3.1 Flash-Lite 三档；加 §0 心智地图、§2 选型矩阵、TL;DR 同步更新。
+- **[深入 03 · §3.11 榜单快照](../深入/03-模型与工具场景化最佳实践.md#311-关键榜单快照2026-05-24)** —— LM Arena Overall Top 10（Gemini 3.5 Flash 新进 #9，Grok 4.20 双子出榜）、Coding Top 5（#5 由 GLM-5.1 换为 GPT-5.4 High）、SWE-bench 加注 "mini-SWE-agent 框架口径" 并补全局 Top 5 来源。
+- **[深入 03 · §1.5 OpenRouter 用量](../深入/03-模型与工具场景化最佳实践.md#15-开源-vs-闭源的差距变化)** —— Top 10 重写：DeepSeek 系列占 3 席，Anthropic 双子稳定 #3-4，"Owl Alpha" 实验模型进 #5；加 MoneyShare 维度（按月累计）。
+- **[深入 03 · §4.1 工具生态](../深入/03-模型与工具场景化最佳实践.md#41-agentic-cli-工具)** —— stars / release 数字按月度更新；**opencode 项目 owner 由 `sst/opencode` 改名为 `anomalyco/opencode`**（旧 URL 仍 301，但脚注与正文同步更）。
+- **[深入 03 · §3 OpenAI GPT 家族](../深入/03-模型与工具场景化最佳实践.md#gpt-5-家族)** —— gpt-5.5 补全价格（$5 / $30 per MTok）和 reasoning 档位；gpt-5.4 / 5.4-mini 同步补价格列；context 口径从 "1.05M (922K in/128K out)" 校准为官方 "1M / 128K out"。
+- **[附录 C · 术语表](../附录/C-术语表.md)** —— 新增 "Tokenizer 代际差异" 条（Opus 4.7 用新 tokenizer，token 体积比 Sonnet 4.6 大 ~1.35×）；Gemini 分层条加注稳定档迁移。
+- **[附录 D · Qwen URL](../附录/D-厂商官方学习资源.md)** —— `https://huggingface.co/Qwen（HF` 括号粘连修复（URL 后加空格分隔）。
+- **全书 LM Arena URL** —— `lmarena.ai` 301 跳转到 `arena.ai`，所有引用同步更新（深入 03 脚注 + 月度清单 + 维护清单 + 漂移度表 + 共同语言 03 + AI辅助更新）。
+
+### 维护
+- 月度清单的 LM Arena URL 同步替换。
+- 所有改动文件 frontmatter `updated:` 改为 2026-05-24。
+
+### 关键设计决策
+- **不重写框架**：本次纯快照漂移消化，所有结构 / 章节 / 学习路径不变。
+- **OpenAI gpt-5.5 价格补全是新数据**（v1.3.0 当时未确认），属正常滚动补全，不算修订。
+- **opencode owner 改名**算非纯数字漂移，但只改 slug / 注脚，不重排表格——仍记为 patch。
+
+### 为什么是 patch 版本
+- 没有新增章节、没有框架变化。
+- 全部为快变内容（榜单、价格、stars、命名）的月度对齐。
+- 影响读者用书路径的部分（仅 Gemini 段命名升级）已局部消化，未触发 minor。
 
 ---
 

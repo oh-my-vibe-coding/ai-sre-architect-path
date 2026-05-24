@@ -1,6 +1,6 @@
 ---
 title: AI 辅助更新 · 让 Claude Code 帮你维护书
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [meta, maintenance, ai-assisted, prompts]
 ---
 
@@ -41,7 +41,7 @@ tags: [meta, maintenance, ai-assisted, prompts]
 ### 1. 模型榜单扫描
 访问以下来源（用 WebFetch 或 WebSearch），对比书里 `深入/03-模型与工具场景化最佳实践.md` 的相应部分：
 
-- LM Arena: https://lmarena.ai/leaderboard
+- LM Arena: https://arena.ai/leaderboard
   - 给 Overall Top 10 和 Coding Top 5 当前状态
 - OpenRouter: https://openrouter.ai/rankings
   - 给付费模型 Token 用量 Top 10

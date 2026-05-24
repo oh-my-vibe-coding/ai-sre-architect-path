@@ -1,6 +1,6 @@
 ---
 title: 附录 D · 厂商官方学习资源（📊 每季度校对）
-updated: 2026-05-10
+updated: 2026-05-24
 tags: [appendix, training, vendor-official, 📊]
 ---
 
@@ -129,7 +129,7 @@ tags: [appendix, training, vendor-official, 📊]
 - Quickstart + Guides
 
 ### Alibaba Qwen
-- **URL**：https://huggingface.co/Qwen（HF 上的 model cards + 技术报告）
+- **URL**：https://huggingface.co/Qwen （HF 上的 model cards + 技术报告）
 - 官方博客：https://qwenlm.github.io/
 
 ### xAI Grok
