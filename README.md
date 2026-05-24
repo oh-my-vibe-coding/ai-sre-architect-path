@@ -8,7 +8,7 @@ tags: [handbook, index]
 
 > 写给 **不被 AI 替代、且能与算法工程师并肩** 的工程师
 >
-> **版本**：v1.3.1 · 2026-05-24  ·  [📝 CHANGELOG](维护/CHANGELOG.md)  ·  [🔧 维护系统](维护/README.md)
+> **版本**：v1.3.2 · 2026-05-24  ·  [📝 CHANGELOG](维护/CHANGELOG.md)  ·  [🔧 维护系统](维护/README.md)
 
 ---
 
@@ -19,6 +19,8 @@ tags: [handbook, index]
 - 👉 [本周任务模板](练习/周循环总览.md) — 每周循环节奏和第一周启动
 - 👉 [每月自检表](附录/A-每月自检表.md) — 月末打开这个
 - 👉 [复习系统](复习/README.md) — 卡片 + Active Recall + Bloom 分级
+- 👉 [第 6 章 · 致命三角](知识/06-AI自治与上下文架构约束.md#致命三角lethal-trifecta) — Agent 安全相关问题的标准入口
+- 👉 [附录 E · 模板 9 · AI 生产就绪一页评审](附录/E-模板库.md) — 如果你已经有 AI 系统在生产，从这里开始 review
 - 👉 [AI SRE 现实图谱](深入/11-AI-SRE现实图谱.md) — 从真实生产环境看系统、指标、组织边界
 - 👉 [Claude / GPT / Gemini 使用指南](深入/12-Claude-GPT-Gemini三大模型系列使用指南.md) — 三大主流模型系列的常识、选型和使用方式
 
@@ -194,7 +196,7 @@ tags: [handbook, index]
 | 每周 | B2 写作 + AI 挑错 | 30-60 分钟 |
 | **合计** | | **~2 小时/周** |
 
-**总学习周期**：Unit 0-5 为 19 周 ≈ 4.5 个月；Capstone 建议另留 1 周或两个周末。
+**总学习周期**：Unit 0-5 为 19 周 + Capstone 1 周 = **20 周（约 4.5-5 个月）**。
 
 ---
 

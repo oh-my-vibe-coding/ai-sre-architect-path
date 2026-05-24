@@ -1,6 +1,6 @@
 ---
 title: Unit 0 · Week 2 · 本地 RAG
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [part-3, practice, unit0, week]
 ---
 
@@ -74,6 +74,8 @@ tags: [part-3, practice, unit0, week]
 - [ ] `data/eval/smoke.jsonl` 有 5 条事故问题 + 期望答案要点
 - [ ] 跑 smoke eval 能**答对 ≥3 条**（带来源引用）
 - [ ] `README.md` 更新到"Unit 0 完成：能查 runbook + 调 tool"
+
+> **怎么"跑 smoke eval"**：Unit 0 阶段还没有 `app/eval.py`（那是 Unit 2 W1 才会建）。这里**手工跑**就够了：CLI 里逐条问 5 个问题，对照 `smoke.jsonl` 里的"期望答案要点"打 pass/fail（命中要点 + 引用正确 = pass）。把结果记在 commit message 或 `data/eval/smoke-results-W2.md` 里。Unit 2 W1 会把它自动化。
 
 ---
 

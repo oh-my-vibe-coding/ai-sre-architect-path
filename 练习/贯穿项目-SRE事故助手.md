@@ -1,6 +1,6 @@
 ---
 title: 贯穿项目 · SRE 事故助手 RAG + Agent
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [part-3, practice, capstone-project, rag, agent, sre-incident-assistant]
 ---
 
@@ -225,6 +225,22 @@ sre-incident-agent/
 
 > [!TIP]
 > 每个 Unit 结束时，`README.md` 应该有一个**"当前状态"** 节：跑到哪个 Unit、目前能做什么、已知缺什么。这会成为 Capstone 的天然雏形。
+
+### 5 分钟起步命令清单
+
+复制粘贴即可，零摩擦启动：
+
+```bash
+mkdir sre-incident-agent && cd sre-incident-agent
+python -m venv .venv && source .venv/bin/activate
+pip install anthropic openai sqlite-vec pydantic
+echo "ANTHROPIC_API_KEY=..." > .env  # 填上你的 key
+git init && echo ".venv/\n.env\n__pycache__/" > .gitignore
+mkdir -p app data/runbooks data/eval traces tests/injection docs
+cp ../AI时代SRE架构师之路/代码/02-minimal-agent.py app/agent.py  # 起步
+```
+
+> 然后打开 [Unit 0 · Week 1](Unit0-AI大模型上手/Week1-API与工具调用.md) 开干。第一次能跑通的目标：让 `app/agent.py` 回答"这台机器磁盘满了吗"。
 
 ---
 

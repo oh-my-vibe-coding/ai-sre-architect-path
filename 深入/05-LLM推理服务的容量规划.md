@@ -1,6 +1,6 @@
 ---
 title: 深入 05 · LLM 推理服务的容量规划
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [deep-dive, capacity-planning, inference, gpu]
 ---
 
@@ -283,9 +283,11 @@ QPS 相同，token 流量可能差 100×。举例：
 - **用户**：公司内部 100 名 SRE，覆盖 3 个时区轮值
 - **典型一次交互**：粘贴一段告警 / 日志 → Agent 调 2-4 个只读工具（查 metrics / 查依赖 / 查历史事故） → 给出诊断 + runbook 链接
 - **请求形态**（基于灰度期监控的 p95）
-    - 输入：10k token（system prompt 2k + 工具描述 3k + 历史事故片段 3k + 当前事故上下文 2k）
+    - 输入总长度 ~16k token，由两部分组成：
+        - **共享前缀**：14k token（system prompt 2k + 工具描述 3k + runbook 索引 9k）——所有用户、所有工具循环轮次都重复
+        - **用户独立部分**：2k token（当前事故上下文 + 历史片段）——每请求独立
     - 输出：1k token（诊断 + 引用）
-    - 工具循环：平均 3 轮，每轮触发一次新的 prefill
+    - 工具循环：平均 3 轮，每轮触发一次新的 prefill（共享前缀在轮间复用）
 - **业务节奏**
     - 平时：~10 并发，0.5 QPS
     - 值班高峰 / 大事故时：100 并发，**5 QPS**（按这个上限做容量规划）
@@ -295,7 +297,7 @@ QPS 相同，token 流量可能差 100×。举例：
     - 月度可用性 99.5%（事故工具不在 critical path，但失效会拖慢 MTTR）
 - **模型选择**：Llama 3 70B bf16，TP=2，2× H100 一个实例（沿用 §3 的硬件设定）
 
-> 数字怎么来：输入 10k 是因为 SRE 场景必须把 runbook / system prompt / tool schema 全部装进去——这是[深入 04 · "你好"消耗数万 token](04-为什么简单你好也消耗数万token.md) 的现实写照。
+> 数字怎么来：输入总 16k 是因为 SRE 场景必须把 runbook / system prompt / tool schema 全部装进去——这是[深入 04 · "你好"消耗数万 token](04-为什么简单你好也消耗数万token.md) 的现实写照。**14k 共享 + 2k 独立**的拆分是后面 prefix cache 收益分析的关键。
 
 ### 需求摘要表（先列总账，再分解）
 
@@ -304,18 +306,18 @@ QPS 相同，token 流量可能差 100×。举例：
 | 同时活跃 SRE | 100 | 业务上限 |
 | 顶层 QPS | 5 | 每人 ~0.05 QPS |
 | 工具循环后的等效 QPS | **15** | 平均 3 轮 prefill / 顶层请求 |
-| p95 输入 token | 10k | 监控 |
+| p95 输入 token | 16k（14k 共享 + 2k 独立） | 监控 |
 | p95 输出 token | 1k | 监控 |
 | TTFT p99 目标 | 3s | SLO |
 | tokens/s 目标 | 25 | SLO |
 
-### 步骤 1：prefill 容量
+### 步骤 1：prefill 容量（按 cache-miss 等效计算）
 
-- **工具循环放大**：5 顶层 QPS × 平均 3 轮 = **15 prefill QPS**（每次工具返回都触发新一轮 prefill，KV cache 复用见步骤 3）
-- 单卡 H100 prefill：70B × 10k 约 1.4s × 2 TP = ~0.7s → **每秒 ~1.4 请求**
-- 需要实例数：`15 / 1.4 ≈ 11 个 TP=2 实例` = **22 张 H100**
+- **工具循环放大**：5 顶层 QPS × 平均 3 轮 = **15 prefill QPS**
+- 单卡 H100 prefill：70B × 16k 约 2.2s × 2 TP = ~1.1s → **每秒 ~0.9 请求**（按完全无缓存的最坏情况）
+- 实例数（无 cache）：`15 / 0.9 ≈ 17 个 TP=2 实例` = **34 张 H100**
 
-> 这一步最容易掉的坑：直接用顶层 5 QPS 算，会少买 2/3 的容量。**Agent workload 的真实 QPS = 顶层 QPS × 工具循环深度**。
+> 这一步最容易掉的坑：直接用顶层 5 QPS 算，会少买 2/3 的容量。**Agent workload 的真实 QPS = 顶层 QPS × 工具循环深度**。这个数字是"未开 prefix caching"的上限——步骤 3 会用真实命中率修正。
 
 ### 步骤 2：decode 容量
 
@@ -325,33 +327,42 @@ QPS 相同，token 流量可能差 100×。举例：
 
 > Decode 比 prefill 贵得多——这就是 [深入 03 PD 解耦](03-模型与工具场景化最佳实践.md#16-推理基础设施的三个关键演化) 的现实驱动力。SRE 助手场景下，**decode 是真正的成本中心**。
 
-**取 max(11, 52) = 52 个实例 = 104 张 H100**
+**取 max(prefill 实例数, decode 实例数) = max(17, 52) = 52 个实例 = 104 张 H100**
 
-> Decode 占主导，是 SRE 助手这种"输入长、需要细致解释"工作负载的典型形态。如果场景换成日志摘要（输入大、输出短），结论会倒过来。
+> 后面 §3 prefix cache 会进一步压低 prefill 实例需求，但 max() 仍由 decode 主导——所以**最终账单按 decode 算**。Decode 占主导，是 SRE 助手这种"输入长、需要细致解释"工作负载的典型形态。如果场景换成日志摘要（输入大、输出短），结论会倒过来。
 
-### 步骤 3：Prefix Cache 校验（决定真实账单）
+### 步骤 3：Prefix Cache 校验（只压低 prefill 那条腿）
 
 SRE 助手有一个明显的"高重复前缀"特征：
-- system prompt + tools schema（约 5k）+ 公司 runbook 索引（约 9k）每次请求都重复
-- 而且 Agent 工具循环里，**前 N-1 轮的 prefix 也在第 N 轮中复用**
+- 14k 共享前缀（system prompt + tools schema + runbook 索引）每次请求都重复
+- Agent 工具循环里，**前 N-1 轮的 prefix 也在第 N 轮中复用**
 
 按 [深入 02 · Prompt Caching](02-Prompt-Caching原理.md) 的模型估算：
-- 共享前缀长度：约 14k token
-- 缓存命中率（实测灰度期）：**~85%**（剩 15% 因事故新数据破缓）
-- prefill 实际 token：`10k × 0.15 + 10k × 0.85 × 0.1 = 2.35k`（cached portion 仍按 ~10% 等效成本算）
+- 共享前缀长度：14k token
+- 用户独立部分：2k token
+- 缓存命中率（实测灰度期）：**~85%**（剩 15% 因 runbook 索引随事故新数据周期性更新而破缓）
+- 每请求的等效 prefill token：
+    - 共享前缀部分：`14k × (0.15 + 0.85 × 0.10) ≈ 3.3k`（命中部分按 cache-miss 价格的 ~10% 折算等效成本——见 [深入 02 · §3 Anthropic 价格模型](02-Prompt-Caching原理.md)）
+    - 用户独立部分：`2k`（每次都全 prefill）
+    - 合计：~5.3k token 等效，约为原 16k 的 33%
 
 **修正后的 prefill 容量**：
-- 等效 prefill 时间：`0.7s × 0.235 ≈ 0.16s`
-- 单实例：~6 请求/s → 15 QPS 只需 **3 个实例**
+- 等效 prefill 时间：`1.1s × 0.33 ≈ 0.36s`
+- 单实例：~2.7 请求/s → 15 QPS 只需 **6 个实例**
 
-> 没开 prefix caching 的容量规划会比真实需求高 3-5 倍。这是 §1 三角约束 + §6 KV cache 公式 + 业务场景共同决定的——单看任何一个维度都得不到正确答案。
+> 没开 prefix caching 的容量规划会比真实需求高 3 倍（17 vs 6）。但**这只影响 prefill 那条腿**——decode 实例数 52 不变，所以 max() 仍是 52，最终账单不变。Prefix cache 真正的省钱效应在 token 计费（少付 90% 的 cached portion）而不是实例数。
 
-### 步骤 4：KV cache 校验
+### 步骤 4：KV cache 校验（按"用户独立部分 + 一份共享前缀"算）
 
 - 高峰同时活跃请求 ≈ 100
-- 单实例可承载并发：52 实例 → 平均 **1.9 并发/实例**
-- 每请求独占 KV cache：扣除 14k 共享前缀后，**独立部分 ~6k token = 1.9 GB**
-- 单实例可用 KV cache：12 GB → ~6 并发 ✓（safety margin 充足）
+- 实例数 52 → 平均 **1.9 并发/实例**
+- **每实例的 KV cache 占用**：
+    - 一份共享前缀（14k token）：14k × 0.32 MB = **4.5 GB**（实例内所有并发共享一份）
+    - 每并发的用户独立部分（2k token）：2k × 0.32 MB ≈ 0.65 GB，× 2 并发 ≈ **1.3 GB**
+    - 合计：~5.8 GB
+- 单实例可用 KV cache：12 GB → **safety margin ~50%** ✓
+
+> 这里勘正一个常见误算：很多人把"每请求 16k × KV cache per token"当作并发占用，但**共享前缀只占一份**——这是 prefix caching 在显存维度的另一个收益。
 
 ### 步骤 5：余量和韧性
 

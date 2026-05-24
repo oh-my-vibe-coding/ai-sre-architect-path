@@ -1,6 +1,6 @@
 ---
 title: Unit 0 · Week 1 · API 调用与工具使用
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [part-3, practice, unit0, week]
 ---
 
@@ -26,8 +26,9 @@ tags: [part-3, practice, unit0, week]
 - [ ] 加 system prompt（一句话"你是一个 SRE 助手"）
 - [ ] 调整 temperature（试 0 / 0.3 / 1.0），观察输出差异
 - [ ] 实现 tool use：
-  - `run_shell(cmd)` —— 白名单 2-3 个命令（`uptime`, `df -h`, `ls`），禁止其他
+  - `run_shell(cmd)` —— 白名单 2-5 个只读命令（`uptime`, `df -h`, `ls`, `ps`, `free`），禁止其他
   - `read_file(path)` —— 只读，限制在某目录
+  - 参考 [`代码/02-minimal-agent.py`](../../代码/02-minimal-agent.py)，包含 tool result 净化层示例
 - [ ] 让模型能自主决定何时调用工具，回灌结果后继续生成
 
 ### 验证（15 分钟）

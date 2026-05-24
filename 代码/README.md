@@ -1,6 +1,6 @@
 ---
 title: 参考代码 · README
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [code, reference, templates]
 ---
 
@@ -67,6 +67,22 @@ pip install anthropic openai sqlite-vec pydantic fastapi datasketch
 export ANTHROPIC_API_KEY=your_key
 export OPENAI_API_KEY=your_key  # 如果用 OpenAI embedding
 ```
+
+---
+
+## 代码 ↔ Unit / Week 对应
+
+跟着练习走时，按"我现在在哪一周"找该 copy 哪个文件：
+
+| Unit / Week | 推荐 copy 起步的代码 | 备注 |
+|---|---|---|
+| Unit 0 W1（API + tool use）| [`02-minimal-agent.py`](02-minimal-agent.py) | 含 tool result 净化层示例 |
+| Unit 0 W2（本地 RAG）| [`03-local-rag.py`](03-local-rag.py) | SQLite + sqlite-vec |
+| Unit 1（致命三角 / 红队）| [`02-minimal-agent.py`](02-minimal-agent.py) 改造 | 见 GUIDE 任务 4 |
+| Unit 2 W1-W2（Trace-Eval）| [`04-eval-skeleton.py`](04-eval-skeleton.py) | 三层 eval 骨架 |
+| Unit 3 W1-W4（推理 SLO / 网关）| [`05-llm-gateway.py`](05-llm-gateway.py) + [`01-claude-caching.py`](01-claude-caching.py) | 计账 + 限流 + caching |
+| Unit 4（复合可靠性 / verifier）| [`04-eval-skeleton.py`](04-eval-skeleton.py) 扩展 | Verifier ≈ 实时 eval |
+| Unit 5（数值底座）| 主要靠 [科学 03/04](../科学/) + Anthropic postmortem，代码侧 [`07-canary-check.py`](07-canary-check.py) 可参考 | — |
 
 ---
 

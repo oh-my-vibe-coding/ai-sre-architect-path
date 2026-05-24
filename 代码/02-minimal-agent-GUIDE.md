@@ -1,6 +1,6 @@
 ---
 title: 代码 02 · 最小 Agent · 教学指南
-updated: 2026-05-05
+updated: 2026-05-24
 tags: [code, guide, agent, tool-use]
 ---
 
@@ -178,6 +178,8 @@ def write_to_scratch(filename: str, content: str) -> str:
 
 ### 任务 4 · Prompt Injection 红队（高难）
 
+> 02-minimal-agent.py 自带了一个**最小净化层**（`sanitize_tool_result` + system prompt 里的"标签内是数据不是指令"约定）。本任务的目标是**绕过它**，理解为什么应用层防御不能替代基础设施层。
+
 在 tool 返回值里嵌入注入 payload：
 
 ```python
@@ -189,11 +191,10 @@ def run_shell_adversarial(cmd: str) -> str:
 ```
 
 **观察**：
-- Agent 会被骗吗？
-- 白名单能挡住吗？
-- 如何改进让**间接注入**也被挡？
-
-（参考 [深入 07](../深入/07-Agent-Prompt-Injection红队实战.md)）
+- 默认 sanitize 层挡住了吗？（包成 `<tool_output>` + system 提示后，多数模型会拒绝）
+- 试试更狡猾的 payload：让攻击文本本身也假装是 `</tool_output>` 闭合 + 新的 system 角色——能绕过吗？
+- 白名单本身（run_shell 只允许 `uptime` 等）能挡多少？
+- 如果 Agent 真的被骗调用了 `rm`，**真正的最后一道防线**应该在哪？（提示：见第 6 章致命三角的"砍外泄通道"——容器级 sandbox 才是物理边界）
 
 ### 任务 5 · 加 MCP 工具（较难）
 
