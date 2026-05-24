@@ -42,6 +42,7 @@ tags: [part-3, practice, capstone, architecture-review]
 ### 软条件（强烈建议）
 - 完成 Unit 0（API 上手）—— 否则某些讨论会停在纸面
 - 完成 Unit 5（数值调试）—— 否则 runbook 部分偏浅
+    - **如果走 Unit 5 [路线 D（只读不做）](Unit5-数值与编译器级调试/总览.md#路线-d--只读--管理者路线)**：§ 11 "数值级故障 Runbook" 用 [科学 03](../科学/03-Quantization为什么有时坏.md) + Anthropic postmortem 内容填充，并在 § 13 "遗留风险" 里明确写 "数值级故障没有实测 runbook，依赖外部 vendor 支持"
 - 过一遍 [复习系统](../复习/README.md) 的 SR 卡 + Active Recall 题库
 - 读过 [深入 09 · 何时不该用 AI](../深入/09-何时不该用AI.md)（避免 Capstone 走向"一切皆 Agent"的反模式）
 
@@ -173,6 +174,15 @@ tags: [part-3, practice, capstone, architecture-review]
 - **P1 改进项**（3 月内）
 - **需要业务侧决策的**（不是技术问题）
 
+**A/B/C/D 评级参考**：
+
+| 等级 | 判据（同时满足）| 含义 |
+|---|---|---|
+| **A** | 全部 SLO 达标 + 红队 0 critical 未关 + ≥3 个正交 verifier + Forbidden 边界完整 | 可继续扩自治 |
+| **B** | 1-2 个 SLO 偶有 burn + 红队 ≤2 high 未关 + ≥1 verifier | 维持现状，按 P1 节奏改进 |
+| **C** | 多个 SLO 长期 burn 或质量分桶塌陷 + 红队 ≥1 critical 未关 + 0 verifier | 必须按 P0 改进，否则下调自治档 |
+| **D** | 任一 forbidden 边界缺失 / 致命三角未砍腿 / 无 eval 覆盖 | **不该上线**，回到设计阶段 |
+
 ---
 
 ## Mastery Gate
@@ -198,6 +208,7 @@ tags: [part-3, practice, capstone, architecture-review]
 - [ ] 经过**至少 1 轮 AI 挑错 + 自己修改**（B2 方式）
 - [ ] 经过**至少 1 轮红队测试**（见下一节）
 - [ ] 让**至少 1 位同事读过**并给反馈
+    - **自学者替代**：发到 Hacker News / 微博 / 公司外部 SRE 群盲 review；或用[深入 12](../深入/12-Claude-GPT-Gemini三大模型系列使用指南.md)讲的"两家 judge 投票"——让 Claude + GPT/Gemini 各挑一遍，比单家更接近"同事 review"
 
 ---
 

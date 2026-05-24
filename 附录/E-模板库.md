@@ -618,8 +618,13 @@ python -m app.eval data/eval/smoke.jsonl
 ### 8. Go / No-Go
 - Go 条件：<列出必须满足项>
 - No-Go 条件：<列出一票否决项>
-- 本次结论：Go / Conditional Go / No-Go
+- 本次结论：Go / Conditional Go / Defer / No-Go
+    - **Go**：可上线
+    - **Conditional Go**：可上线，但需满足 P0 条件并按到期时间复查
+    - **Defer**：技术上可行但当前不是上线时机（业务优先级 / 资源 / 时间窗口），回到 PRD 重新评估
+    - **No-Go**：技术架构问题，需重新设计后再评审
 - Conditional Go 的到期复查时间：<YYYY-MM-DD>
+- Defer 的重评时间：<YYYY-MM-DD>
 ```
 
 ---

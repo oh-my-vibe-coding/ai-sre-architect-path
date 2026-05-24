@@ -41,6 +41,17 @@ tags: [meta, review, spaced-repetition, active-recall]
 - 第 30 天
 - 之后每月一次
 
+**操作技巧**：建一个简单 markdown 表跟踪"今天该过哪些卡"——
+
+```markdown
+| 卡片范围 | 上次读 | 下次读 |
+|---|---|---|
+| Unit 0 (Q1-Q10) | 2026-05-15 | 2026-05-22 |
+| Unit 1 (Q11-Q25) | 2026-05-19 | 2026-05-22 |
+```
+
+**或者**：直接把 `anki-import.csv` 喂给任何 SR 软件（Anki Desktop / AnkiDroid / Mochi / RemNote / Apple Shortcuts + ChatGPT），让算法替你排。**强烈不推荐用 Excel 排间隔**——会忘。
+
 **没坚持的成本**：4 个月后 Unit 0/1 基本忘光。
 
 ---

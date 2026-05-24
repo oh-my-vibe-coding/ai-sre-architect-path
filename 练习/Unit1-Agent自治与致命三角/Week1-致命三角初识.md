@@ -15,7 +15,9 @@ tags: [part-3, practice, unit1, week]
 
 ## 阅读 · B3 · 45 分钟（无 AI）
 **Simon Willison · 《The lethal trifecta for AI agents: private data + untrusted content + external communication》**
-（simonwillison.net 搜 "lethal trifecta"）
+
+固定 URL：https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/
+若 404，搜 "lethal trifecta site:simonwillison.net"。
 
 阅读要求：
 - 不开 AI 辅助、不用翻译插件

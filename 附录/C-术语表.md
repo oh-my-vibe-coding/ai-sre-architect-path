@@ -23,6 +23,7 @@ tags: [appendix]
 | GPT flagship / mini / nano / reasoning | OpenAI GPT 系列的常见分层：旗舰做复杂任务，mini/nano 做低成本高频任务，reasoning 档用于复杂推理 |
 | Gemini Pro / Flash / Flash-Lite | Google Gemini 系列的常见分层：Pro 偏复杂和长上下文，Flash 偏速度成本平衡，Flash-Lite 偏轻量高吞吐。当前稳定档为 Gemini 3.5 Flash，旗舰为 Gemini 3.1 Pro Preview（Gemini 3 Pro Preview 已于 2026-03-09 关停）|
 | Reasoning / Thinking Budget | 推理时让模型"多想一会"的预算控制，通常会增加延迟和 token 成本 |
+| 精度（精度位数 / Precision） | 每个模型参数占多少字节，直接决定显存占用和带宽需求：**fp32 = 4 / bf16 = 2 / fp16 = 2 / int8 = 1 / int4 = 0.5** 字节。例：70B bf16 ≈ 140GB；70B int4 ≈ 35GB |
 
 ## 检索与记忆
 

