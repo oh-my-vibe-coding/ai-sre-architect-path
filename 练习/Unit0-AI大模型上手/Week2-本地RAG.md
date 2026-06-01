@@ -79,6 +79,34 @@ tags: [part-3, practice, unit0, week]
 
 ---
 
+## 范例参考
+
+> 关于"架构图 + 失败模式分析"的**填好范例**：
+
+### Agent 数据流
+
+```
+用户: "数据库连接池满了怎么办"
+  → CLI 收到查询
+  → 调 embedding API 把查询转成向量
+  → FAISS 向量库 top-3 相似搜索
+  → 返回: [runbook-db-pool.md:§3, postmortem-2025-03.md:§7, runbook-connection.md:§2]
+  → 拼进 prompt: system + 检索结果 + 用户问题
+  → Claude 生成回答（附来源引用）
+  → 返回给用户
+```
+
+### 至少 3 种失败模式
+
+| 失败模式 | 示例 | 对抗方式 |
+|---------|------|---------|
+| **检索不到** | 用户问"K8s HPA 抖动"，但 runbook 里只写了"自动扩缩容"，词不匹配 | 加同义词映射；embedding 模型选领域匹配的（中文用 bge-m3） |
+| **检索错片段** | 用户问"OOM 怎么办"，返回了"磁盘满怎么办"的 runbook（都提到了"内存"） | Rerank 环节；Top-K 不能太大（K ≤ 5 控制中间塌陷） |
+| **模型忽略检索结果** | 检索返回了正确 runbook，但模型说"我无法确定，建议重启试试" | Prompt 强制要求引用来源；输出无引用时触发重试 |
+| **模型在结果里编造** | 检索结果说"max_connections=100"，模型回答"建议设为 200" | System prompt: "只基于检索结果回答，不要添加检索结果中没有的建议" |
+
+---
+
 完成 Unit 0 后 → [Unit 1 · Agent 自治与致命三角](../Unit1-Agent自治与致命三角/总览.md)
 
 上一步 → [Unit 0 · Week 1](Week1-API与工具调用.md)

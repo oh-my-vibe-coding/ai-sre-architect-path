@@ -64,7 +64,7 @@ tags: [shared-language, alignment, rlhf, dpo, safety]
 
 **产出**：**Instruction-tuned Model**——能对话，但可能无礼、不安全、不符合特定价值观。
 
-SFT 不够——它能教模型"格式"，但教不了**偏好细微差别**。
+SFT 不够用——它能教模型回答的"格式"，但教不了**偏好上的细微差别**。
 
 ---
 
@@ -195,7 +195,7 @@ sequenceDiagram
 - **效果接近**：对多数场景够用
 - **便宜**：少 30-50% 算力
 
-**2024-2026 的 DPO 几乎成默认**。Llama 3、Qwen 3、Mistral、DeepSeek 大量采用。
+**2024-2026 的 DPO 几乎已成为默认选择**。Llama 3、Qwen 3、Mistral、DeepSeek 大量采用。
 
 ### 4.3 DPO 家族
 
@@ -229,7 +229,7 @@ Reward Model 是 RLHF 的核心，也是最大痛点。
 
 ### 6.1 Reward Model Drift
 
-Policy 模型通过 RL 优化，逐渐找到 RM 的漏洞。RM 打分和真实偏好的对齐度**随训练下降**。
+Policy 模型通过 RL 持续优化，会逐渐发现 RM 的漏洞。RM 的打分与人类真实偏好之间的对齐度，**会随训练推进而持续下降**。
 
 **ML 团队说**：*"这次 RM 跑飞了，chosen 和 rejected 已经分不清"*
 
@@ -375,7 +375,7 @@ Claude 系列重度使用 CAI / RLAIF。
 - **Tool use 行为**（工具调用频率变）
 
 **SRE 要做的**：
-- 上线前跑你自己的 eval 套件
+- 上线前跑你自己的评估套件（eval suite）
 - Shadow 流量对比
 - Refusal rate / 输出长度等**风格指标**作为 SLI
 
@@ -402,7 +402,7 @@ Claude 系列重度使用 CAI / RLAIF。
 > **ML**：held-out reward 掉 8%。KL 还有 30%。
 > **SRE**：那应该不是 policy collapse，是 RM drift。要不你先看下哪几类 prompt 分数掉得最多？可能是分布偏移。另外这次换 RM 后 refusal rate 得重新校准，我帮你跑一遍 over-refusal eval set。
 
-这就是真正的共同工作。
+这就是真正的共同协作。
 
 ---
 
@@ -450,6 +450,8 @@ Claude 系列重度使用 CAI / RLAIF。
 - Casper et al · 《Open Problems and Fundamental Limitations of RLHF》— https://arxiv.org/abs/2307.15217
 - Anthropic · Sleeper Agents paper — https://arxiv.org/abs/2401.05566
 - Anthropic · Mechanistic Interpretability 研究栏目 — https://transformer-circuits.pub/
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

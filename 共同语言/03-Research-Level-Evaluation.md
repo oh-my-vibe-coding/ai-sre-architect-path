@@ -23,7 +23,7 @@ tags: [shared-language, evaluation, benchmark, research]
 - ML 团队讨论 ablation 时："这版本在 GSM8K 涨了但 MATH 没动"
 - 客户或老板问："这个模型比 GPT-5 好吗"
 
-**如果你听不懂这些指标的语义，就只能在会议里点头**。
+**如果你听不懂这些指标的含义，就只能坐在会议室里点头**。
 
 ---
 
@@ -247,7 +247,7 @@ ML 团队做 ablation，需要的 eval 是：
 | + Code anneal | 67.9 | 42.3 | **75.6** | 7.9 | 代码强 |
 | Both | **69.5** | **48.1** | **75.9** | 8.0 | **最终版** |
 
-**SRE 要知道**：每一行都是**一个完整 run**，跑一次可能几天 + 上千卡。**Ablation 贵得离谱**——ML 团队必须精算哪些组合值得跑。
+**SRE 要知道**：每一行都是**一个完整 run**，跑一次可能几天 + 上千卡。**Ablation 的成本极高**——ML 团队必须精算哪些组合值得跑。
 
 ---
 
@@ -275,12 +275,12 @@ ML 团队做 ablation，需要的 eval 是：
 
 ### 7.4 Judge 模型打分
 
-用 LLM 给 LLM 打分。**判官偏见**（同家模型对自家输出评分偏高）。**AlpacaEval / MT-Bench** 用这方法，要读的时候打折。
+用 LLM 给 LLM 打分。**评委偏见**（同家模型对自家输出评分偏高）。**AlpacaEval / MT-Bench** 用这方法，要读的时候打折。
 
 ### 7.5 Cherry-picking
 
 Paper 里报告"我们赢的 10 个 benchmark"，没提"我们输的 5 个"。
-**读 tech report 时**：看完整表格，不看文字摘要。
+**读 tech report 时**：看完整的表格，而不是只看文字摘要。
 
 ---
 
@@ -307,7 +307,7 @@ Paper 里报告"我们赢的 10 个 benchmark"，没提"我们输的 5 个"。
 - **有没有 contamination check**？
 - **Ablation 表有没有**？
 
-**避免因 benchmark 刷分迷惑导致上线事故**。
+**避免被 benchmark 刷分迷惑，导致上线事故**。
 
 ---
 
@@ -370,6 +370,8 @@ Paper 里报告"我们赢的 10 个 benchmark"，没提"我们输的 5 个"。
 - Huang et al · 《LiveCodeBench》— https://arxiv.org/abs/2403.07974
 - LMSYS · LM Arena leaderboard — https://arena.ai/leaderboard
 - Hugging Face · Open LLM Leaderboard — https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

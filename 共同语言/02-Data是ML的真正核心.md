@@ -20,7 +20,7 @@ tags: [shared-language, data, pipeline, contamination]
 - 20%：看 loss curve 纠结参数
 - 80%：看**数据质量报告**、**重训 data pipeline**、**debug 数据 schema 错误**
 
-**数据才是 ML 的"代码"**。模型架构在 2-3 家开源方案里选，算法在几个主流里选——**数据的选择和处理，才是真正决定产品的变量**。
+**数据之于 ML，就如同代码之于传统软件**。模型架构在 2-3 家开源方案里选，算法在几个主流里选——**数据的选择和处理，才是真正决定产品走向的变量**。
 
 ---
 
@@ -168,7 +168,7 @@ SRE 能帮上什么：
 
 ## 6. Data Mixing（配比）
 
-**这是 ML 团队 2024-2026 的核心黑魔法**。
+**这是 ML 团队 2024-2026 的"黑魔法"所在**。
 
 ### 6.1 典型 Mix
 
@@ -208,7 +208,7 @@ SRE 能帮上什么：
 
 - 高质量人类数据**见顶**（能爬的都爬了）
 - 强模型可以生成**比低质量网页更好的**训练数据
-- 可以**针对特定能力**生成（数学推理、code、对话）
+- 可以针对特定能力定向生成（数学推理、代码、对话）
 
 ### 7.2 方法
 
@@ -216,6 +216,8 @@ SRE 能帮上什么：
 - 用 GPT-4 / Claude 生成 response
 - 用这批数据 SFT 小模型
 - Alpaca / Vicuna 的套路
+- 学术源头：Hinton et al · *Distilling the Knowledge in a Neural Network* (2015) — https://arxiv.org/abs/1503.02531
+- LLM 时代实战范例（**推荐先读**，含中文）：DeepSeek-AI · *DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning* (2025) — 把 R1 的 reasoning trace 蒸到 Qwen / Llama 小模型并开源权重。英文 arXiv https://arxiv.org/abs/2501.12948 ；中文版 PDF 见官方仓库 https://github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf （README 有中文摘要）
 
 **Persona-based generation**
 - 让强模型扮演不同角色生成对话
@@ -363,7 +365,11 @@ SRE 能帮上什么：
 - AI2 · Dolma paper — https://arxiv.org/abs/2402.00159
 - Microsoft · Phi-3 Technical Report — https://arxiv.org/abs/2404.14219
 - Lee et al · Deduplicating training data makes LMs better — https://arxiv.org/abs/2107.06499
+- Hinton et al · Distilling the Knowledge in a Neural Network — https://arxiv.org/abs/1503.02531
+- DeepSeek-AI · DeepSeek-R1（含中文 PDF 与开源蒸馏小模型）— https://github.com/deepseek-ai/DeepSeek-R1 · arXiv https://arxiv.org/abs/2501.12948
 - OpenAI / Anthropic · 数据 policy & safety 文档
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

@@ -8,7 +8,7 @@ tags: [deep-dive, gateway, sre, multi-provider, observability]
 
 > [← 返回目录](../README.md)  ·  对应知识章节：[第 5 章 · AI 推理服务的可靠性工程](../知识/05-AI推理服务的可靠性工程.md)、[第 7 章 · 质量可观测性 ＋ Data Flywheel](../知识/07-质量可观测性与DataFlywheel.md)
 
-> 把"模型/Agent 内部 SRE"和"网关/中间层 SRE"分开看。这一篇专讲后者——很多团队忽视它，但**真实生产里 80% 的"AI 系统"其实就是这一层**。
+> 把"模型/Agent 内部 SRE"和"网关/中间层 SRE"分开看。这一篇专讲后者——很多团队容易忽视它，但**真实生产中 80% 的"AI 系统"其实就是这一层**。
 
 ---
 
@@ -45,7 +45,7 @@ tags: [deep-dive, gateway, sre, multi-provider, observability]
 
 ## 2. 不能控制调用方时的可观测性模式
 
-普通可观测的标准做法是"应用代码 → trace SDK → 后端"，假设你能改业务代码。
+传统可观测的标准做法是"应用代码 → trace SDK → 后端"，这一假设的前提是你能改业务代码。
 
 **网关位这个假设不成立**——调用方可能是几十个团队、几百个脚本、若干第三方 SDK，你改不动他们。所以你必须用一套不一样的可观测模式：
 
@@ -149,7 +149,7 @@ tags: [deep-dive, gateway, sre, multi-provider, observability]
 2. **AI 特有的故障模式集中在网关位**。本书前面 16 个事故 Pattern 里至少有 6 个（Cache Miss Storm、Tokenizer Drift、Cost Explosion via Context、KV Preemption、Batching Spike、Zombie Stream）的最佳观察/拦截点都在网关——不是在模型里。
 3. **计费、路由、限流是 AI SRE 的责任，而它们都长在网关上**。把网关划走等于把可靠性预算的控制权交出去。
 
-**给读者的判据**：如果你的组织里"网关"和"AI SRE"是两个团队，且每周不开同一个例会、不看同一组指标——那么你要么去推动合并，要么明确知道**自己正在用一个反生产模式做事**。
+**给读者的判据**：如果你的组织中"网关"和"AI SRE"是两个团队，且每周不开相同的例会、不看同一组指标——那么你要么推动合并，要么清楚地意识到**自己正在用一种反生产模式做事**。
 
 ---
 
@@ -228,6 +228,8 @@ network gateway logs (含上面三列)
 - [深入 10 · Pattern 16 · Zombie Stream](10-AI系统事故模式库.md#pattern-16--zombie-stream伪存活流) —— 网关位独有的伪存活流事故
 - [深入 11 · AI SRE 现实图谱](11-AI-SRE现实图谱.md) —— 真实生产环境的系统/指标/组织边界全景
 - [Unit 2 · Trace-Eval 统一可观测性](../练习/Unit2-TraceEval统一可观测性/总览.md) —— 把这一篇里的可观测要求落到具体设计
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

@@ -27,12 +27,12 @@ LLM 应用测试：
 ```
 输入 X → 期望 "something reasonable" → 实际输出 Y
          ↓
-         Y 可能和期望完全不同但也算对 (语义等价)
-         Y 可能看起来对但实际错 (流利的幻觉)
-         Y 每次运行都不同 (temperature > 0)
+         Y 可能和期望完全不同但仍算正确（语义等价）
+         Y 可能看起来正确但实际错误（流利的幻觉）
+         Y 每次运行都不同（temperature > 0）
 ```
 
-**核心难题**：**正确性没有 ground truth**。
+**核心难题**：**正确性没有可参照的标准答案（ground truth）**。
 
 这导致 LLM eval 必须做三件传统测试不做的事：
 
@@ -387,6 +387,8 @@ def l1_check(answer: dict) -> bool:
 - Langfuse docs · Evaluators and datasets — https://langfuse.com/docs
 - Phoenix (Arize) docs · LLM evals — https://docs.arize.com/phoenix
 - Braintrust · Eval-first workflow blog — https://www.braintrust.dev/blog
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

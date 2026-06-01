@@ -383,7 +383,7 @@ spans:
 > [!IMPORTANT]
 > **RAG 系统不是"一个东西"**。Embedding 服务、Vector DB、Reranker、LLM 是**四个独立运维对象**，每个都有自己的 SLO / 容量 / 升级流程 / 事故模式。
 >
-> 把 RAG 当成一个整体盯，等于不盯。
+> 把 RAG 当成一个整体来盯，等于没盯。
 >
 > 这一章是 [深入 06 Eval Pipeline](06-Eval-Pipeline设计.md) 的 RAG 视角补充——eval 是出口，但出口前的三个独立服务每一个都要被 SRE 严肃运维。
 
@@ -397,6 +397,8 @@ spans:
 - Pinecone Benchmark / 容量规划 — https://www.pinecone.io/learn/
 - MTEB Benchmark（embedding 模型评测）— https://huggingface.co/spaces/mteb/leaderboard
 - ann-benchmarks（vector DB 性能基准）— https://ann-benchmarks.com/
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

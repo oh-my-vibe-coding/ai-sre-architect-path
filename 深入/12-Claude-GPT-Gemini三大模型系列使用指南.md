@@ -11,7 +11,7 @@ tags: [deep-dive, models, claude, gpt, gemini, vendor-guide, snapshot]
 > [!WARNING]
 > 本章包含**模型系列、能力口径、API 形态、厂商命名习惯**等快变信息。内容快照日期为 **2026-05-24**；实际生产选型前，请以 Anthropic / OpenAI / Google 官方文档和你自己的 eval 为准。
 >
-> 本章不追榜单，不给"谁最强"这种过期很快的结论。它只讲三件更耐用的东西：**怎么理解三大系列、怎么选、怎么用不容易踩坑**。
+> 本章不追榜单，不给"谁最强"这种很快过期的结论。它只讲三件更耐用的东西：**怎么理解三大系列、怎么选、怎么用才能少踩坑**。
 
 ---
 
@@ -448,6 +448,8 @@ flowchart TB
 - Anthropic / Claude Docs · Models、Prompt engineering、Extended thinking、Tool use、Prompt caching
 - OpenAI Platform Docs · Models、Responses API、Function calling、Structured outputs、Reasoning、Prompt caching
 - Google Gemini API Docs · Models、Text generation、Long context、Thinking、Function calling、Live API
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

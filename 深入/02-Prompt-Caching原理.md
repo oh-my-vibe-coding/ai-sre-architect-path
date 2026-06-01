@@ -176,7 +176,7 @@ OpenAI 无写入成本但折扣小，适合"有多少用多少"的场景。
 这叫**缓存路由亲和**（sticky routing / session affinity）。
 
 **工程含义**：
-- 云 API 后端通常会尽量路由到同一实例，但不保证
+- 云 API 后端通常会尽量路由到同一实例，但无法对此做出保证
 - Traffic 突增或实例扩容时，缓存命中率会下降
 - 自建推理服务时必须设计路由策略（按 session ID / 按 prompt hash）
 
@@ -314,6 +314,8 @@ OpenAI 无写入成本但折扣小，适合"有多少用多少"的场景。
 - vLLM · Prefix Caching 设计文档（开源推理服务的实现参考）
 - SGLang · RadixAttention 论文 / 文档（最早实现基于 radix tree 的 prefix cache）
 - 《Efficient Memory Management for Large Language Model Serving with PagedAttention》（vLLM 论文）
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

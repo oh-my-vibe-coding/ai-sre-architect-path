@@ -23,7 +23,7 @@ tags: [science, quantization, numerical, silent-degradation]
 - **第 10 天**：客户大量投诉"回答突然变糟糕"
 - 排查：某类特定任务（涉及精细数字比较）错误率 30%，其他任务完全正常
 
-**这不是 bug，是 quantization 的固有特性**。懂了原理才能设计 eval、选方法、识别失败模式。
+**这不是 bug，是 quantization 的固有特性**。理解原理才能设计 eval、选择方法与识别失败模式。
 
 ---
 
@@ -155,7 +155,7 @@ Transformer 有几十到几百层。每层量化误差单独看可能只 0.1%，
 **Attention 的 softmax**
 - 见[科学 01](01-Attention与Transformer的SRE视角.md#7)
 - softmax 里的 `e^x` 对输入精度敏感
-- 量化后的 `QK^T` 如果误差分布偏，softmax 会失真
+- 量化后的 `QK^T` 如果误差分布存在偏差，softmax 会失真
 
 **Layer Normalization**
 - 计算均值和方差
@@ -317,6 +317,8 @@ H100 / H200 / B200 硬件直接支持 fp8 计算：
 - NVIDIA · FP8 formats for deep learning 白皮书 — https://arxiv.org/abs/2209.05433
 - llama.cpp · GGUF quantization formats — https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md
 - Anthropic · Postmortem of three recent issues（数值级事故典型案例）
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

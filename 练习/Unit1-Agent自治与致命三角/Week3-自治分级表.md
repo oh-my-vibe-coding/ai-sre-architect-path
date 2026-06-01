@@ -75,6 +75,45 @@ tags: [part-3, practice, unit1, week]
 
 ---
 
+## 范例参考
+
+> 以下是 SRE 事故助手场景的**自治分级表示例**（填好的）。你的场景不同，但分级的维度和判据逻辑参考这个。
+
+### 自动驾驶（Auto）
+
+| 操作 | 判据 | 护栏 |
+|------|------|------|
+| `kubectl get pods --all-namespaces` | 只读 + 无副作用 | 审计日志 |
+| `grep -r "ERROR" /var/log/app/` | 只读 + 文件系统范围受控 | 限制目录白名单 |
+| 查 Prometheus 指标 | 只读 HTTP GET | 只给 query_range，不给写 |
+| 生成 runbook 建议草稿 | 只生成文本，不执行 | 输出标"建议，请人工确认" |
+
+### 需确认（Confirm）
+
+| 操作 | 判据 | 确认机制 |
+|------|------|---------|
+| `send_slack_alert(channel, msg)` | 写操作 + 对外可见 | 先预览消息 → 人工点"发送" |
+| `kubectl rollout restart deploy/X` | 可回滚但有 blast radius | 二人确认 + 仅限变更窗口 |
+| 创建 Jira ticket | 写操作 + 组织可见 | 先预览 ticket → 人工点"提交" |
+| `systemctl restart nginx` | 可回滚但影响在线流量 | 仅在人工明确授权后执行 + 超时 30s |
+
+### 禁止（Forbidden）
+
+| 操作 | 判据 | 为什么 |
+|------|------|------|
+| `kubectl delete pvc` | 不可回滚 + 全量数据丢失 | 无论如何都不暴露给 Agent |
+| `DROP TABLE / DELETE FROM` | 不可回滚 + 全量影响 | 数据库写操作一律人工 |
+| 修改 IAM / RBAC 策略 | 不可回滚 + 安全边界 | Agent 不能修改自己的权限边界 |
+| `aws s3 rm` / `gsutil rm` | 不可回滚 + 全量影响 | 数据删除一律人工 |
+| 修改 DNS / LB 配置 | blast radius = 全站 | 基础设施变更一律人工 |
+
+### 关键数字
+- 总操作数：19
+- Auto 占比：4/19 = 21%（< 50%，符合预期）
+- Forbidden 数量：5（非空，符合预期）
+
+---
+
 下一步 → [Unit 1 · Week 4 · 合成产出](Week4-合成产出.md)
 
 上一步 → [Unit 1 · Week 2](Week2-架构选项三套.md)

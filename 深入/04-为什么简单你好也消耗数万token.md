@@ -45,7 +45,7 @@ LLM API：
 ```
 Client --HTTP--> LLM API
               |
-              +---> (no state. the model has no memory)
+              +---> （没有状态——模型本身没有记忆）
 ```
 
 **模型没有任何记忆**。每次 API 调用都必须**把一切它需要知道的东西全部带上**：
@@ -447,6 +447,8 @@ if input_tokens > budget_per_request:
 - OpenAI · Assistants API / Responses API · https://platform.openai.com/docs/
 - Google · Gemini Context Caching · https://ai.google.dev/gemini-api/docs/caching
 - DeepSeek · Context Caching · https://api-docs.deepseek.com/guides/kv_cache
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

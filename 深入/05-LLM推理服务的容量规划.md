@@ -272,7 +272,7 @@ QPS 相同，token 流量可能差 100×。举例：
 
 **按 token 流量规划**，不要按 QPS。
 
-### 陷阱 5：在网关层用 RPM 限流，等于没做容量保护
+### 陷阱 5：在网关层仅用 RPM 限流，相当于没有实施容量保护
 
 很多 LLM 网关（包括开源的几个流行实现）默认的限流单位是 **RPM/TPM —— 每分钟请求数 / 每分钟 token 数**，按用户、按 API key、按模型分开计数。这种限流**只能防爬虫和滥用**，不能防雪崩，原因有三：
 
@@ -495,6 +495,8 @@ SRE 助手有一个明显的"高重复前缀"特征：
 - 《Efficient Memory Management for LLM Serving with PagedAttention》(vLLM) — https://arxiv.org/abs/2309.06180
 - Anyscale · LLM inference benchmarking 系列博客
 - Character.AI · Optimizing inference (blog) — 讲如何把单用户成本降到 $0.0001
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 

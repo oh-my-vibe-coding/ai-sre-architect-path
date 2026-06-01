@@ -120,7 +120,7 @@ tags: [science, tokenization, cost, multilingual]
 代码里 "17" 这个数字固定是 `"17"` token。
 算术里 "173 + 289" 里 "173" 和 "289" 被切可能完全不同。
 
-**这就是为什么 LLM 数学普遍差**——不是"不聪明"，是 tokenization 没给它足够一致的表示。
+**这就是为什么 LLM 普遍不擅长精确计算**——不是"不聪明"，是 tokenization 没给它足够一致的表示。
 
 ### 3.4 SRE 含义
 
@@ -141,7 +141,7 @@ https://example.com/api/v2?user_id=123&session=abc
 → ["https", "://", "example", ".com", "/", "api", "/", "v2", "?", "user", "_id", "=", "123", "&", "session", "=", "abc"]
 ```
 
-- **token 数暴多**
+- **token 数极高**
 - **模型理解 URL 结构能力弱**
 - 解决：用 tool use 处理 URL，别让模型自己拼
 
@@ -301,6 +301,8 @@ tokens = tok.encode("你好")
 - Anthropic · Tokenizer docs — https://docs.claude.com/en/docs/about-claude/tokenization
 - Qwen · Tokenizer details on HuggingFace — https://huggingface.co/Qwen
 - Simon Willison · 《GPT-4 can't count letters》— https://simonwillison.net/2023/Sep/29/llms-count-characters/
+
+🔄 复习：[核心概念卡](../复习/核心概念卡.md) · [Active Recall 题库](../复习/Active-Recall题库.md)
 
 ---
 
