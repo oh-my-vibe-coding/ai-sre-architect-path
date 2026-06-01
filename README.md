@@ -1,6 +1,6 @@
 ---
 title: AI 时代的 SRE 架构师之路
-updated: 2026-05-24
+updated: 2026-06-01
 tags: [handbook, index]
 ---
 
@@ -8,7 +8,7 @@ tags: [handbook, index]
 
 > 写给 **不被 AI 替代、且能与算法工程师并肩** 的工程师
 >
-> **版本**：v1.4.0 · 2026-05-24  ·  [📝 CHANGELOG](维护/CHANGELOG.md)  ·  [🔧 维护系统](维护/README.md)
+> **版本**：v1.5.0 · 2026-06-01  ·  [📝 CHANGELOG](维护/CHANGELOG.md)  ·  [🔧 维护系统](维护/README.md)
 
 ---
 
@@ -82,6 +82,7 @@ tags: [handbook, index]
 - [深入 14 · 微调作为运维对象（LoRA / QLoRA / 全参）](深入/14-微调作为运维对象.md)
 - [深入 15 · Model Registry 与上线流程](深入/15-模型注册表与上线流程.md)
 - [深入 16 · Embedding 服务作为独立运维对象](深入/16-Embedding-服务作为独立运维对象.md)
+- [深入 17 · LLM 网关的 SRE 视角](深入/17-LLM网关的SRE视角.md) 🆕
 
 ### 科学（恰到好处的机制）
 > 不讲如何训练模型，只讲"做好工程判断必须知道的机制"。4 篇高 ROI 专题。

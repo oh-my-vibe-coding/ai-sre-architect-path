@@ -272,6 +272,48 @@ QPS 相同，token 流量可能差 100×。举例：
 
 **按 token 流量规划**，不要按 QPS。
 
+### 陷阱 5：在网关层用 RPM 限流，等于没做容量保护
+
+很多 LLM 网关（包括开源的几个流行实现）默认的限流单位是 **RPM/TPM —— 每分钟请求数 / 每分钟 token 数**，按用户、按 API key、按模型分开计数。这种限流**只能防爬虫和滥用**，不能防雪崩，原因有三：
+
+1. **RPM 把不同形态请求当成一回事**——一个 200k context 的请求和一个 200 token 的请求，对上游 KV cache 的占用差三个数量级，但在 RPM 视角下完全等价。
+2. **RPM 是"过去 1 分钟"的事后视角**——等 RPM 触发的时候，上游的 KV cache 已经爆了 30 秒。
+3. **TPM 看似按 token 算，但用的是"已结束请求的 token 数"**——一个还在跑的、生成到第 5000 token 的长输出请求，根本不在 TPM 的分子里。
+
+**正确的网关位限流抽象：inflight token budget**
+
+把"当前所有还没结束的请求加起来一共占了多少 token"作为唯一的限流维度。它有三个特点：
+
+- **实时**：每个请求开始时按 `len(input) + max_tokens` 预扣，结束时按实际用量结清。
+- **可分桶**：每个上游通道维护一个 budget（总值 ≈ 上游侧 KV cache 容量 × 安全系数），通道之间不共享。
+- **天然反压**：budget 用尽 → 新请求阻塞或拒绝（429），budget 不会受到"已完成请求的统计窗口"的延迟影响。
+
+最小实现伪代码：
+
+```
+budget[channel] = 上游KV预算token数 × 0.8
+
+on request:
+  estimated = len(input_tokens) + request.max_tokens
+  if budget[channel].try_acquire(estimated):
+    forward upstream
+    on stream_end:
+      actual = input_tokens + completion_tokens
+      budget[channel].release(estimated)
+      budget[channel].adjust(estimated - actual)  # 还多领的 token
+  else:
+    return 429 with Retry-After
+```
+
+**两层限流的搭配**：
+
+| 层 | 限流单位 | 防什么 | 在哪做 |
+|---|---|---|---|
+| 入口 | RPM / TPM | 滥用、爬虫、计费保护 | API key 维度 |
+| 上游 | inflight tokens | 雪崩、KV cache 抢占、长尾延迟 | channel × 模型维度 |
+
+**判据**：如果你的 LLM 网关只有 RPM/TPM 没有 inflight tokens，那就是没做容量保护。流量稍有形态变化（一个用户突然开始发 100k context 请求）就会冲垮上游，且事故曲线一定是"RPM 还没到限就先 5xx"的形态。
+
 ---
 
 ## 7. Worked Example：SRE 事故助手的完整容量规划

@@ -238,6 +238,44 @@ OpenAI 无写入成本但折扣小，适合"有多少用多少"的场景。
 
 所以必须**主动监控 cache hit rate**，不能等事故后才发现。
 
+### 5.5 多上游网关位的特殊风险（语义不一致 + 计费陷阱）
+
+第 3 节已经列了三家 API 的差异。如果你**只为一家上游写代码**，知道差异就够了。但如果你做的是 **LLM 网关**——一个通用 endpoint 后面挂着 OpenAI / Anthropic / Gemini / 自建模型若干家——那么这些差异从"接口细节"升级成"**生产风险**"。
+
+**风险一：写入溢价的不对称**
+
+把同一个用户从 OpenAI 通道切到 Anthropic 通道（或反之）时，看似只换了 model 名字，但成本曲线完全不同：
+- OpenAI 通道：写入 0 溢价，命中省 50%
+- Anthropic 通道：写入溢价 25%，命中省 90%
+
+对**高重用场景**（多轮、RAG 命中），切到 Anthropic 反而更便宜；对**低重用场景**（一次性长文档分析），切到 Anthropic 会**直接涨价 25%**。网关如果不区分这两类工作负载就做"自动路由"，账单会无缘无故上下浮动。
+
+**风险二：归一化是个伪命题**
+
+很多团队第一直觉是"在网关层抹平 caching 差异"。试一下就知道做不到：
+
+- Anthropic 要客户端在请求里显式打 `cache_control`，OpenAI 不需要——网关无法用同一种入参表达"我希望缓存这一段"。
+- OpenAI 的命中是按 prefix 自动判定的，网关读不到"这次到底命中了没"——你只能从计费字段里反推。
+- Gemini 的 cached content 是**显式资源**（要先 create，再引用 id），与前两家的"内联标记"模型根本不同。
+
+**结论**：网关层只能做**透传 + 观测**，不要做归一化。
+
+**风险三：计费回放与对账**
+
+每家上游回包里**报"缓存命中量"的字段位置和命名都不同**：
+- Anthropic 在 `usage` 里给 `cache_read_input_tokens / cache_creation_input_tokens`
+- OpenAI 在 `usage.prompt_tokens_details.cached_tokens`
+- Gemini 不在响应里，要去查 cached content 的 metadata
+
+网关如果用一套 `usage` 结构落 DB，**默认会丢一两个字段**，结果就是月底对账对不上。**网关计费日志的最小字段集必须显式包含三家口径下所有的 cache token 计数**，缺哪个填 0，但字段必须存在。
+
+**网关侧的最小自检清单**：
+
+- [ ] 计费日志同时记录 `prompt_tokens / cache_read_tokens / cache_write_tokens / completion_tokens` 四列，**任一上游缺字段就填 0，不要省列**
+- [ ] 不同 channel 的 cache hit rate 分别看，混在一起的 hit rate 没意义
+- [ ] 跨 channel 路由策略上线前，**先用一个真实工作负载的回放**算两边账单，再决定是否切流
+- [ ] 跟用户沟通时讲清"换通道 = 换缓存计费模型"，不能让调用方以为"模型名一样就一样"
+
 ---
 
 ## 6. 实战：哪些场景最受益
