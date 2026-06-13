@@ -120,7 +120,7 @@ LLM 服务的质量看 assertion / judge。Embedding 服务的质量看 **retrie
 |---|---|---|
 | **Hit@k** | gold set 的 top-k 包含正确答案的比例 | > 90%（k=10）|
 | **MRR** (Mean Reciprocal Rank) | 1/正确答案排名的平均 | > 0.7 |
-| **NDCG@k** | 排序加权的命中率 | > 0.8 |
+| **NDCG@k** | 排序加权的命中率（排在前面的正确结果比排在后面的得分更高） | > 0.8 |
 | **Embedding drift** | 同一 batch 文档在不同时间的 embedding 距离 | < 阈值（应该 0，除非模型变了）|
 | **Cold corpus retrieval** | 新加入的文档能否被检索到 | > 95% |
 
@@ -157,6 +157,8 @@ Embedding 算出来的向量存在 vector DB 里。Vector DB 本身是另一个 
 存储 = 向量数 × (维度 × 4 bytes + metadata 大小)
 索引内存 = HNSW 索引大小 ≈ 向量数 × 维度 × 8 bytes（含 graph 链接）
 ```
+
+> HNSW（Hierarchical Navigable Small World）是向量库最常见的索引结构——把向量组织成多层图加速相似搜索，代价是额外占用内存（约原始向量的 2×）。
 
 **Worked example**：1 亿条文档 × 1024 维 float32：
 - 原始向量：100M × 4096 byte = **400 GB**

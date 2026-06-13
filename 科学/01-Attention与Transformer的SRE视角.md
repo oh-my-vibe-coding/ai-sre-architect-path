@@ -52,6 +52,8 @@ tags: [science, transformer, attention, mechanism]
 
 ### 2.2 核心操作（简化公式）
 
+**一句话**：每个位置的输出 = 它"关注了"所有位置的信息，关注多强看相似度。下面这个公式就是把这句话翻译成数学。
+
 ```
 attention(Q, K, V) = softmax(Q · K^T / √d) · V
 ```
@@ -170,7 +172,9 @@ N 个位置互相算相似度 → **N² 个相似度值**。
 
 ### GQA：让多个 Q head 共享一组 KV
 
-**关键观察**：Q 差异要大（每个 head 看不同东西），但 **K 和 V 可以少一些**。
+**问题**：64 个 head 就有 64 份 K 和 V → KV cache 大 64 倍 → 你的 GPU 显存大半被 KV cache 吃掉，能服务的并发数骤降。
+
+**解决思路**：Q 的差异要大（每个 head 确实该看不同东西），但 **K 和 V 可以少一些**——因为"被查的东西"不需要 64 份不同的索引，8 份就够了。这就是 GQA 的核心直觉。
 
 GQA（Grouped Query Attention）：
 - 保留 64 个 Q head
