@@ -23,6 +23,29 @@ tags: [meta, changelog]
 
 ---
 
+## v1.8.5 — 2026-06-13
+
+**说人话审视改进**：对 v1.8.4 新增内容进行可读性优化，不改变任何事实数据。
+
+### 修订
+
+- **[深入 03 · 模型与工具场景化最佳实践](../深入/03-模型与工具场景化最佳实践.md)**
+    - TL;DR #3：3 个括号补充（"K2.7 Code 已上架"等）合并为 1 个尾部注，读者视线只跳一次。
+    - §1.5 校对补充 NOTE：加"扫一眼即可"优先级引导，区分值得现在知道的和按需查阅的。
+    - §3.11 LM Arena NOTE："简单说"含义前置（arena.ai 不再公布分数，看 rank），技术细节后置。
+    - LM Arena 两张表的表后注释精简，过滤规则说明合并到表前 note。
+- **[深入 12 · Claude / GPT / Gemini 三大模型系列使用指南](../深入/12-Claude-GPT-Gemini三大模型系列使用指南.md)**
+    - Gemini Computer Use 段落：从一句 160 字拆为能力 → 风险 → 动作三层，每层独立一行。
+- **[维护/CHANGELOG.md](CHANGELOG.md)**
+    - v1.8.2 / v1.8.3 / v1.8.4 三条"关键设计决策"改为 `<details>` 可折叠块——版本历史扫读不受影响，决策上下文仍可查阅。
+- **README / mkdocs.yml / 维护/README.md / build 链路** — 版本号 v1.8.4 → v1.8.5 六处同步。
+
+### 关键设计决策
+
+- **为什么是 patch 而非 minor**：没有新增内容、没有改结构——是 v1.8.4 的可读性 polish，属于 patch 定义里的"勘误 / 表述优化"。
+
+---
+
 ## v1.8.4 — 2026-06-13
 
 **月度快照消化 · Anthropic Opus 4.8 / Fable 5 / Gemini Computer Use Preview**：v1.8.3 标注"待人工补"的外部快照（深入 03 / 12 / 附录 C）这一轮一次性补齐。绕开沙箱无法直连的 `r.jina.ai`，改用 `arena.ai` / `openrouter.ai` 公开 API、`swebench.com` 主页内嵌的 `<script id="leaderboard-data">`、`docs.claude.com` / `ai.google.dev` / `api-docs.deepseek.com` 源站直拉，再以 `gh api` 拉 SWE-bench experiments 仓库做交叉验证。
